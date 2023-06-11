@@ -177,8 +177,6 @@ public class telaFuncionario extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.getAccessibleContext().setAccessibleName("Cadastrar Funcionário");
-
         getAccessibleContext().setAccessibleName("Gerenciar Funcionários");
 
         pack();
