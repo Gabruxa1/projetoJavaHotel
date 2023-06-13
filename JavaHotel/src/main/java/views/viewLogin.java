@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.event.KeyEvent;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +38,11 @@ public class viewLogin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel1KeyPressed(evt);
+            }
+        });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/do-utilizador (1).png"))); // NOI18N
 
@@ -51,9 +57,20 @@ public class viewLogin extends javax.swing.JFrame {
                 txtLoginActionPerformed(evt);
             }
         });
+        txtLogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtLoginKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Senha");
+
+        txtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSenhaKeyPressed(evt);
+            }
+        });
 
         btnEntrar.setBackground(new java.awt.Color(66, 141, 255));
         btnEntrar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -62,6 +79,11 @@ public class viewLogin extends javax.swing.JFrame {
         btnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEntrarActionPerformed(evt);
+            }
+        });
+        btnEntrar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEntrarKeyPressed(evt);
             }
         });
 
@@ -160,6 +182,166 @@ public class viewLogin extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void btnEntrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEntrarKeyPressed
+        // TODO add your handling code here:
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String nomeUsuario = txtLogin.getText();
+            char[] senhaUsuario = txtSenha.getPassword();
+            String senha = String.valueOf(senhaUsuario);
+
+            FuncionarioDAO dao = new FuncionarioDAO();
+            ArrayList<Funcionario> funcionarios = dao.read();
+
+            boolean credenciaisValidas = false;
+
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] senhaHash = md.digest(senha.getBytes());
+
+                String senhaHashMD5 = new BigInteger(1, senhaHash).toString(16);
+
+                for (Funcionario f : funcionarios) {
+                    if (f.getUsuario().equals(nomeUsuario) && f.getSenha().equals(senhaHashMD5)) {
+                        credenciaisValidas = true;
+                        break;
+                    }
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                // Tratar a exceção, se necessário
+                System.out.println("Erro ao criptografar a senha: " + ex);
+            }
+
+            if (credenciaisValidas) {
+                TelaPrincipal tp = new TelaPrincipal();
+                tp.setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Credenciais inválidas. Acesso negado!");
+            }
+        }
+    }//GEN-LAST:event_btnEntrarKeyPressed
+
+    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String nomeUsuario = txtLogin.getText();
+            char[] senhaUsuario = txtSenha.getPassword();
+            String senha = String.valueOf(senhaUsuario);
+
+            FuncionarioDAO dao = new FuncionarioDAO();
+            ArrayList<Funcionario> funcionarios = dao.read();
+
+            boolean credenciaisValidas = false;
+
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] senhaHash = md.digest(senha.getBytes());
+
+                String senhaHashMD5 = new BigInteger(1, senhaHash).toString(16);
+
+                for (Funcionario f : funcionarios) {
+                    if (f.getUsuario().equals(nomeUsuario) && f.getSenha().equals(senhaHashMD5)) {
+                        credenciaisValidas = true;
+                        break;
+                    }
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                // Tratar a exceção, se necessário
+                System.out.println("Erro ao criptografar a senha: " + ex);
+            }
+
+            if (credenciaisValidas) {
+                TelaPrincipal tp = new TelaPrincipal();
+                tp.setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Credenciais inválidas. Acesso negado!");
+            }
+        }
+
+    }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void txtLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLoginKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String nomeUsuario = txtLogin.getText();
+            char[] senhaUsuario = txtSenha.getPassword();
+            String senha = String.valueOf(senhaUsuario);
+
+            FuncionarioDAO dao = new FuncionarioDAO();
+            ArrayList<Funcionario> funcionarios = dao.read();
+
+            boolean credenciaisValidas = false;
+
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] senhaHash = md.digest(senha.getBytes());
+
+                String senhaHashMD5 = new BigInteger(1, senhaHash).toString(16);
+
+                for (Funcionario f : funcionarios) {
+                    if (f.getUsuario().equals(nomeUsuario) && f.getSenha().equals(senhaHashMD5)) {
+                        credenciaisValidas = true;
+                        break;
+                    }
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                // Tratar a exceção, se necessário
+                System.out.println("Erro ao criptografar a senha: " + ex);
+            }
+
+            if (credenciaisValidas) {
+                TelaPrincipal tp = new TelaPrincipal();
+                tp.setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Credenciais inválidas. Acesso negado!");
+            }
+        }
+
+    }//GEN-LAST:event_txtLoginKeyPressed
+
+    private void txtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String nomeUsuario = txtLogin.getText();
+            char[] senhaUsuario = txtSenha.getPassword();
+            String senha = String.valueOf(senhaUsuario);
+
+            FuncionarioDAO dao = new FuncionarioDAO();
+            ArrayList<Funcionario> funcionarios = dao.read();
+
+            boolean credenciaisValidas = false;
+
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] senhaHash = md.digest(senha.getBytes());
+
+                String senhaHashMD5 = new BigInteger(1, senhaHash).toString(16);
+
+                for (Funcionario f : funcionarios) {
+                    if (f.getUsuario().equals(nomeUsuario) && f.getSenha().equals(senhaHashMD5)) {
+                        credenciaisValidas = true;
+                        break;
+                    }
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                // Tratar a exceção, se necessário
+                System.out.println("Erro ao criptografar a senha: " + ex);
+            }
+
+            if (credenciaisValidas) {
+                TelaPrincipal tp = new TelaPrincipal();
+                tp.setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Credenciais inválidas. Acesso negado!");
+            }
+        }
+
+    }//GEN-LAST:event_txtSenhaKeyPressed
 
     /**
      * @param args the command line arguments

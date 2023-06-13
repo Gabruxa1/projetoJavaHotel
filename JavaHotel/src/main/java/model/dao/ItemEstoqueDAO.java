@@ -1,3 +1,5 @@
+package model.dao;
+
 import conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,19 +18,19 @@ public class ItemEstoqueDAO {
         PreparedStatement stmt = null;
         
         try {
-            String sql = "INSERT INTO itemestoque (nome, descricao, preco_unitario, quantidade_estoque) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO produto (nome, preco_unitario, quantidade_estoque, id_tipo) VALUES (?, ?, ?, ?)";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, i.getNome());
-            stmt.setString(2, i.getDescricao());
-            stmt.setDouble(3, i.getPrecoUnitario());
-            stmt.setInt(4, i.getQtdEstoque());
+            stmt.setDouble(2, i.getPrecoUnitario());
+            stmt.setInt(3, i.getQtdEstoque());
+            stmt.setInt(4, i.getTipoProduto().getId());
             
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Produto Cadastrado com Sucesso");
                         
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Falha ao inserir Produto");
-            Logger.getLogger(ItemEstoqueDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ItemEstoque.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             Conexao.fecharConexao(con, stmt);
         }
@@ -38,7 +40,7 @@ public class ItemEstoqueDAO {
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        ArrayList<ItemEstoque> itens = new ArrayList();
+        ArrayList<ItemEstoque> produtos = new ArrayList();
         
         try {
             String sql = "SELECT * FROM itemestoque";
@@ -47,13 +49,13 @@ public class ItemEstoqueDAO {
             
             while(rs.next()){
                 ItemEstoque i = new ItemEstoque();
-                i.setId(rs.getInt("id_produto"));
+                i.setId(rs.getInt("id"));
                 i.setNome(rs.getString("nome"));
-                i.setDescricao(rs.getString("descricao"));
                 i.setPrecoUnitario(rs.getDouble("preco_unitario"));
-                i.setQtdEstoque (rs.getInt("quantidade_estoque"));
+                i.setQtdEstoque(rs.getInt("quantidade_estoque"));
+                i.setTipoProduto(new TipoProdutoDAO().find(rs.getInt("id_tipo")));
                 
-                itens.add(i);
+                produtos.add(i);
             }
                         
         } catch (SQLException ex) {
@@ -63,22 +65,54 @@ public class ItemEstoqueDAO {
             Conexao.fecharConexao(con, stmt, rs);
         }
         
-        return itens;
+        return produtos;
     }
     
+        public ItemEstoque find(int id) {
+        Connection con = Conexao.getConexao();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ItemEstoque i = null;
+        
+        try {
+            String sql = "SELECT * FROM itemestoque WHERE id = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                i = new ItemEstoque();
+                i.setId(rs.getInt("id"));
+                i.setNome(rs.getString("nome"));
+                i.setPrecoUnitario(rs.getDouble("preco_unitario"));
+                i.setQtdEstoque(rs.getInt("quantidade_estoque"));
+                i.setTipoProduto(new TipoProdutoDAO().find(rs.getInt("id_tipo")));
+             
+            }
+                        
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Falha ao consultar Produtos");
+            Logger.getLogger(ItemEstoqueDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Conexao.fecharConexao(con, stmt, rs);
+        }
+        
+        return i;
+    }
     
     public void update(ItemEstoque i) {
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = null;
         
         try {
-            String sql = "UPDATE itemestoque SET nome = ?, descricao = ?, preco_unitario = ?, quantidade_estoque = ? WHERE id_produto = ?";
+            String sql = "UPDATE itemestoque SET nome = ?, preco_unitario = ?, quantidade_estoque = ?, id_tipo = ? WHERE id_tipo = ?";
             stmt = con.prepareStatement(sql);
             stmt.setString(1, i.getNome());
-            stmt.setString(2, i.getDescricao());
-            stmt.setDouble(3, i.getPrecoUnitario());
-            stmt.setInt(4, i.getQtdEstoque());
-
+            stmt.setDouble(2, i.getPrecoUnitario());
+            stmt.setInt(3, i.getQtdEstoque());
+            stmt.setInt(4, i.getTipoProduto().getId());
+            stmt.setInt(5, i.getId());
+            
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Produto Atualizado com Sucesso");
         } catch (SQLException ex) {
@@ -91,7 +125,7 @@ public class ItemEstoqueDAO {
         PreparedStatement stmt = null;
         
         try {
-            String sql = "DELETE FROM itemestoque WHERE id = ?";
+            String sql = "DELETE FROM itemestoque WHERE id_tipo = ?";
             stmt = con.prepareStatement(sql);
             stmt.setInt(1, i.getId());
             
@@ -103,3 +137,4 @@ public class ItemEstoqueDAO {
         }
     }
 }
+

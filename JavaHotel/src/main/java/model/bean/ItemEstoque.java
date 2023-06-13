@@ -2,11 +2,11 @@ package model.bean;
 
 
 public class ItemEstoque {
-    int id;
-    String nome;
-    String descricao;
-    double precoUnitario;
-    int qtdEstoque;
+    private int id;
+    private String nome;
+    private double precoUnitario;
+    private int qtdEstoque;
+    private TipoProduto tipoProduto;
 
     public int getId() {
         return id;
@@ -24,20 +24,12 @@ public class ItemEstoque {
         this.nome = nome;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
     public double getPrecoUnitario() {
         return precoUnitario;
     }
 
-    public void setPrecoUnitario(double precoUnitatio) {
-        this.precoUnitario = precoUnitatio;
+    public void setPrecoUnitario(double precoUnitario) {
+        this.precoUnitario = precoUnitario;
     }
 
     public int getQtdEstoque() {
@@ -47,5 +39,14 @@ public class ItemEstoque {
     public void setQtdEstoque(int qtdEstoque) {
         this.qtdEstoque = qtdEstoque;
     }
-    
+
+    public TipoProduto getTipoProduto() {
+        return tipoProduto;
+    }
+
+    public void setTipoProduto(TipoProduto tipoProduto) {
+        this.tipoProduto = tipoProduto;
+    }
 }
+
+    
